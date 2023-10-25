@@ -19,6 +19,7 @@ import {
   MenuOutlined,
   SearchOutlined,
 } from "@mui/icons-material";
+import { FetchImage } from "./Api";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -44,30 +45,50 @@ const Search = styled("div")(({ theme }) => ({
 
 const Navbar = ({ mode, setMode }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [setsearchImage, setSetsearchImage] = useState("");
+  const [searchImage, setSearchImage] = useState("");
   const [imageListing, setImageListing] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
   };
+  const handleSearch = async () => {
+    if (searchImage.trim() === "") {
+      return;
+    }
+    try {
+      const data = await FetchImage(searchImage);
+      setImageListing(data.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <AppBar sx={{ boxShadow: "none", position: "static" }}>
       <StyledToolbar>
         <Typography variant="h5">Image Gallary</Typography>
+        <SearchOutlined sx={{ display: { xs: "block", sm: "none" } }} />
         <MenuOutlined
           sx={{ display: { xs: "block", sm: "none" } }}
           onClick={toggleDrawer}
         />
-        {/* <ImageSearchOutlined sx={{ display: { xs: "block", sm: "none" } }} /> */}
-        <Search sx={{ display: { xs: "none", sm: "block" } }}>
+        <Search sx={{ display: { xs: "none", sm: "flex" } }}>
           <SearchOutlined />
-
-          <InputBase placeholder="Search Images here" />
+          <InputBase
+            placeholder="Search Images here"
+            fullWidth
+            value={searchImage}
+            onChange={(e) => setSearchImage(e.target.value)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                handleSearch();
+              }
+            }}
+          />
+          {/* {console.log(searchImage)} */}
         </Search>
-        <SearchOutlined sx={{ display: { xs: "block", sm: "none" } }} />
         <Icons sx={{ display: { xs: "none", sm: "flex" } }}>
-          <Button disableElevation>Explore</Button>
+          <Button>Explore</Button>
           <Button>Collection</Button>
           <Button>Community</Button>
         </Icons>

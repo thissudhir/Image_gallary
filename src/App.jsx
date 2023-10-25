@@ -13,8 +13,8 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <Box bgcolor={"background.default"} color={"text.primary"}>
-        <Navbar setMode={setMode} mode={mode} />
-        {/* <Home /> */}
+        {/* <Navbar  /> */}
+        <Home setMode={setMode} mode={mode} />
       </Box>
     </ThemeProvider>
   );
