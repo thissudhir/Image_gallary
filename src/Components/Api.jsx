@@ -14,8 +14,8 @@ export const FetchImage = async (query) => {
         },
       }
     );
-    console.log(response.data);
-    return response.data;
+    console.log(response.data.results);
+    return response.data.results;
   } catch (error) {
     console.error(error);
     throw error;
