@@ -5,22 +5,28 @@ import {
   CardMedia,
   Typography,
   Grid,
-  makeStyles,
   Avatar,
   Box,
   Modal,
+  Button,
 } from "@mui/material";
 import { useSearch } from "./SearchContext";
 import { ThumbUpOutlined } from "@mui/icons-material";
 
 const ImageCards = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // State for the modal
+  const [selectedImage, setSelectedImage] = useState(null);
   const { searchImage, setSearchImage, imageListing, setImageListing } =
     useSearch();
-  const handleclick = () => {
-    console.log("clikced");
+
+  const handleOpenModal = (image) => {
+    setSelectedImage(image);
+    setOpen(true);
   };
-  // console.log(imageListing);
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
   return (
     <Grid container spacing={2}>
       {imageListing.map((listing) => (
@@ -31,7 +37,7 @@ const ImageCards = () => {
               height={"auto"}
               sx={{ backgroundSize: "cover" }}
               image={listing.urls.full}
-              onClick={handleclick}
+              onClick={() => handleOpenModal(listing)}
               title={listing.alt_description}
             />
             <CardContent
@@ -46,24 +52,21 @@ const ImageCards = () => {
               <Box
                 sx={{
                   display: "flex",
-                  // flexDirection: "row",
                   gap: "8px",
                   alignItems: "center",
                   justifyContent: "space-between",
                 }}
               >
-                <Avatar
-                  height="40px"
-                  width="40px"
-                  src={listing.user.profile_image.medium}
-                />
+                <Avatar src={listing.user.profile_image.medium} />
                 <Box>
                   <Typography variant="h6" component="div">
                     {listing.user.username}
                   </Typography>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    @{listing.user.social.instagram_username}
-                  </Typography>
+                  {listing.user.social.instagram_username && (
+                    <Typography variant="subtitle1" color="textSecondary">
+                      @{listing.user.social.instagram_username}
+                    </Typography>
+                  )}
                 </Box>
               </Box>
               <Box
@@ -82,6 +85,46 @@ const ImageCards = () => {
           </Card>
         </Grid>
       ))}
+      <Modal
+        open={open}
+        onClose={handleCloseModal}
+        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+      >
+        <Box width={"auto"} height={"auto"}>
+          {selectedImage && (
+            <Card>
+              <CardMedia
+                component="img"
+                height={300}
+                width={"auto"}
+                sx={{ backgroundSize: "cover" }}
+                image={selectedImage.urls.full}
+                title={selectedImage.alt_description}
+              />
+              <CardContent>
+                <Box>
+                  <Avatar src={selectedImage.user.profile_image.medium} />
+                  <Box>
+                    <Typography variant="h6" component="div">
+                      {selectedImage.user.username}
+                    </Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      @{selectedImage.user.social.instagram_username}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Box>
+                  <ThumbUpOutlined />
+                  <Typography>{selectedImage.likes}</Typography>
+                </Box>
+              </CardContent>
+            </Card>
+          )}
+          <Button variant="contained" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Box>
+      </Modal>
     </Grid>
   );
 };

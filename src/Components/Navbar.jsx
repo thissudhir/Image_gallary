@@ -8,27 +8,21 @@ import {
   InputBase,
   FormControlLabel,
   Switch,
-  Button,
   Drawer,
   List,
   ListItem,
   ListItemText,
 } from "@mui/material";
-import {
-  ImageSearchOutlined,
-  MenuOutlined,
-  SearchOutlined,
-} from "@mui/icons-material";
+import { MenuOutlined, SearchOutlined } from "@mui/icons-material";
 import { FetchImage } from "./Api";
-import ImageCards from "./ImageCards";
 import { useSearch } from "./SearchContext";
 
-const StyledToolbar = styled(Toolbar)({
+const StyledToolbar = styled(Toolbar)(({ theme, mode }) => ({
   display: "flex",
   justifyContent: "space-between",
-  // background: "white",
-  // color: "black",
-});
+  backgroundColor: mode === "light" ? "white" : "dark-color",
+  color: mode === "light" ? "black" : "dark-color",
+}));
 const Icons = styled(Box)(({ theme }) => ({
   display: "flex",
   gap: "20px",
@@ -47,17 +41,15 @@ const Search = styled("div")(({ theme }) => ({
 
 const Navbar = ({ mode, setMode }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  // const [searchImage, setSearchImage] = useState("");
-  // const [, ] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
   const {
     searchImage,
     setSearchImage,
     imageListing,
     setImageListing,
     setSearchResults,
-    searchResults,
   } = useSearch();
-  // const [loading, setLoading] = useState(false);
 
   const toggleDrawer = () => {
     setDrawerOpen(!drawerOpen);
@@ -67,25 +59,17 @@ const Navbar = ({ mode, setMode }) => {
       return;
     }
     try {
-      // setLoading(true);
       const data = await FetchImage(searchImage);
       setImageListing(data);
       setSearchResults(data);
-
-      // setImageListing(imageListing);
-      // console.log("image", setSearchResults);
-      // setSearchImage(searchImage);
     } catch (error) {
       console.error(error);
     }
-    //  finally {
-    //   setLoading(false); // Set loading to false when data fetching is complete
-    // }
   };
   return (
     <>
       <AppBar sx={{ boxShadow: "none", position: "static" }}>
-        <StyledToolbar>
+        <StyledToolbar mode={mode}>
           <Typography variant="h5">Image Gallary</Typography>
           <SearchOutlined sx={{ display: { xs: "block", sm: "none" } }} />
           <MenuOutlined
@@ -95,7 +79,6 @@ const Navbar = ({ mode, setMode }) => {
           <Search sx={{ display: { xs: "none", sm: "flex" } }}>
             <SearchOutlined />
             <InputBase
-              placeholder="Search Images here"
               fullWidth
               value={searchImage}
               onChange={(e) => setSearchImage(e.target.value)}
@@ -104,8 +87,13 @@ const Navbar = ({ mode, setMode }) => {
                   handleSearch();
                 }
               }}
+              inputProps={{
+                style: {
+                  color: mode === "light" ? "gray" : "gray",
+                },
+                placeholder: "Search Images here",
+              }}
             />
-            {/* {console.log(searchImage)} */}
           </Search>
           <Icons sx={{ display: { xs: "none", sm: "flex" } }}>
             <Typography variant="button">Explore</Typography>

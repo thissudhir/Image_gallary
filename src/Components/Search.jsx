@@ -11,7 +11,6 @@ const Searchbar = styled("div")(({ theme }) => ({
   width: "31%",
   display: "flex",
   alignItems: "center",
-  //   justifyContent: "center",
 }));
 
 const Search = () => {

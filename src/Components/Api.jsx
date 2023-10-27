@@ -1,6 +1,5 @@
 import axios from "axios";
 const accessKey = "xaEKHfnwOEDrjHi2YIMJ1PECCVW7d0cmv4GJGpjcuy0";
-// const apiUrl = `search/photos?query=${query}`;
 
 const baseUrl = "https://api.unsplash.com";
 
