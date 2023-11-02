@@ -21,7 +21,6 @@ const Home = ({ mode, setMode }) => {
     <SearchProvider>
       <Navbar setMode={setMode} mode={mode} setSearchImage={setSearchImage} />
       {loading ? (
-        // Show a loading GIF image or message while loading
         <Box
           sx={{
             display: "flex",

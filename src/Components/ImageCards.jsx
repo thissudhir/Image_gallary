@@ -15,9 +15,10 @@ import { ThumbUpOutlined } from "@mui/icons-material";
 import { FetchRandomImage } from "./Api";
 
 const ImageCards = () => {
-  const [open, setOpen] = useState(false); // State for the modal
+  const [open, setOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [randomImage, setRandomImage] = useState(null);
+  const [randomImageList, setRandomImageList] = useState([]);
   const { searchImage, setSearchImage, imageListing, setImageListing } =
     useSearch();
 
@@ -31,9 +32,10 @@ const ImageCards = () => {
   };
 
   useEffect(() => {
-    FetchRandomImage() // Replace with your function to fetch a random image
+    FetchRandomImage(10)
       .then((data) => {
         setRandomImage(data);
+        setRandomImageList(data);
         console.log(data);
       })
       .catch((error) => {
@@ -43,8 +45,8 @@ const ImageCards = () => {
   if (!searchImage) {
     return (
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          {randomImage && (
+        {randomImageList.map((randomImage) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={randomImage.id}>
             <Card>
               <CardMedia
                 component="img"
@@ -97,8 +99,8 @@ const ImageCards = () => {
                 </Box>
               </CardContent>
             </Card>
-          )}
-        </Grid>
+          </Grid>
+        ))}
       </Grid>
     );
   }
