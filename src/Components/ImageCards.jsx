@@ -54,7 +54,48 @@ const ImageCards = () => {
                 onClick={() => handleOpenModal(randomImage)}
                 title={randomImage.alt_description}
               />
-              {/* Other card content here */}
+              <CardContent
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: "2px",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: "8px",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Avatar src={randomImage.user.profile_image.medium} />
+                  <Box>
+                    <Typography variant="h6" component="div">
+                      {randomImage.user.username}
+                    </Typography>
+                    {randomImage.user.social.instagram_username && (
+                      <Typography variant="subtitle1" color="textSecondary">
+                        @{randomImage.user.social.instagram_username}
+                      </Typography>
+                    )}
+                  </Box>
+                </Box>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: "8px",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <ThumbUpOutlined />
+                  <Typography>{randomImage.likes}</Typography>
+                </Box>
+              </CardContent>
             </Card>
           )}
         </Grid>
