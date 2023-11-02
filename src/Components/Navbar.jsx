@@ -55,9 +55,9 @@ const Navbar = ({ mode, setMode }) => {
     setDrawerOpen(!drawerOpen);
   };
   const handleSearch = async () => {
-    if (searchImage.trim() === "") {
-      return;
-    }
+    // if (searchImage.trim() === "") {
+    //   return;
+    // }
     try {
       const data = await FetchImage(searchImage);
       setImageListing(data);
